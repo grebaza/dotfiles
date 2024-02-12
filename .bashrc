@@ -117,6 +117,10 @@ if [ -d ~/.bash_functions ]; then
     done
 fi
 
+if [ -f ~/.vars.sh ]; then
+    . ~/.vars.sh
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).

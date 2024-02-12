@@ -42,3 +42,4 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,venv,virtualenv
 .dotfiles.git
+.vars.sh
