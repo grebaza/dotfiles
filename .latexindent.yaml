@@ -1,0 +1,10 @@
+defaultIndent: "  "
+
+removeTrailingWhitespace:
+  beforeProcessing: 1
+  afterProcessing: 1
+
+noAdditionalIndent:
+  document: 0
+
+onlyOneBackUp: 1
