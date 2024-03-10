@@ -1,5 +1,5 @@
 # shellcheck disable=SC2148
-mvn() {
+_mvn() {
   local VIRT_REGISTRY=${VIRT_REGISTRY:="host.docker.internal:5000"}
   local IMAGE_M2_DIR=/home/builder
   local IMAGE=$VIRT_REGISTRY/jbuilder:0.1-jdk8

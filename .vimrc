@@ -28,7 +28,7 @@ set wildignore+=CVS/*
 set wildignore+=*.mod
 
 " Backup, swap and undofile
-" set noswapfile
+set noswapfile
 set undofile
 set undodir=$HOME/.cache/vim/undo
 if !isdirectory(&undodir)
@@ -70,10 +70,12 @@ set shiftround
 set expandtab
 set preserveindent
 silent! set breakindent
+set pastetoggle=<F10>
 
 " Searching
 set smartcase
 set showmatch
+set shortmess-=S
 
 if executable('rg')
   set grepformat+=%f:%l:%c:%m
@@ -107,7 +109,7 @@ endif
 " }}}
 
 " jdtls lombok support
-let $JAVA_TOOL_OPTIONS = "-javaagent:/home/guillermo/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar -Xbootclasspath/a:/home/guillermo/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar"
+" let $JAVA_TOOL_OPTIONS = "-javaagent:/home/guillermo/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar -Xbootclasspath/a:/home/guillermo/.m2/repository/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar"
 
 " Preferred encoding {{{
   if has("multi_byte")
