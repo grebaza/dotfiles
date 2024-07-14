@@ -92,8 +92,7 @@ syntax on
 if has("statusline")
   set statusline=%<%t\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
 endif
-highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
-
+" highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 
 " Automatically source vimrc on save {{{
 " autocmd! bufwritepost $MYVIMRC source $MYVIMRC
@@ -204,9 +203,39 @@ endif
 
 
 " Tagbar {{{
-  map <F4> :TagbarToggle<CR>
+  " map <F4> :TagbarToggle<CR>
   " autofocus on tagbar open
   let g:tagbar_autofocus = 1
+  " yaml support
+  let g:tagbar_type_yaml = {
+      \ 'ctagstype' : 'yaml',
+      \ 'kinds' : [
+          \ 'a:anchors',
+          \ 's:section',
+          \ 'e:entry'
+      \ ],
+      \ 'sro' : '.',
+      \ 'scope2kind': {
+        \ 'section': 's',
+        \ 'entry': 'e'
+      \ },
+      \ 'kind2scope': {
+        \ 's': 'section',
+        \ 'e': 'entry'
+      \ },
+      \ 'sort' : 0
+      \ }
+" }}}
+
+" Vista {{{
+  map <F4> :Vista!!<CR>
+  let g:vista_stay_on_open = 0
+  let g:vista#renderer#enable_icon = 1
+  let g:vista#renderer#icons = {
+        \   "function": "\uf794",
+        \   "variable": "\uf71b",
+        \  }
+  map <localleader>t :FzfBTags<CR>
 " }}}
 
 
@@ -215,7 +244,7 @@ endif
   let g:NERDTreeDirArrowCollapsible = '▾'
   map <F3> :NERDTreeToggle<CR>
   " open nerdtree with the current file selected
-  nmap ,t :NERDTreeFind<CR>
+  nmap ,r :NERDTreeFind<CR>
   " don;t show these file types
   let NERDTreeIgnore = ['\.pyc$', '\.pyo$', '\.swp', '*\.swp', '\.swo',
         \'\.swn', '\.swh', '\.swm', '.DS_Store']
@@ -258,6 +287,7 @@ endif
   nnoremap <leader>yd :YcmCompleter GoToDefinition<CR>
   nnoremap <leader>yt :YcmCompleter GetType<CR>
   inoremap <expr> ycm_trigger_key pumvisible() ? "<Down>" : ycm_trigger_key;
+  nmap <leader>D <plug>(YCMHover)
 " }}}
 
 
@@ -322,8 +352,6 @@ endif
   nmap ,f :CtrlPLine<CR>
   " recent files finder mapping
   nmap ,m :CtrlPMRUFiles<CR>
-  " commands finder mapping
-  nmap ,c :CtrlPCmdPalette<CR>
   " to be able to call CtrlP with default search text
   function! CtrlPWithSearchText(search_text, ctrlp_command_end)
       execute ':CtrlP' . a:ctrlp_command_end
@@ -342,6 +370,9 @@ endif
 " vim-markdown {{{
   let g:vim_markdown_folding_disabled = 1
   let g:vim_markdown_math = 1
+  let g:vim_markdown_frontmatter = 1
+  let g:vim_markdown_toml_frontmatter = 1
+  let g:vim_markdown_strikethrough = 1
 " }}}
 
 " Location List (loclist) {{{
@@ -393,6 +424,70 @@ let g:vimtex_compiler_latexmk = {
 " inkscape-figures ext program
 autocmd FileType tex inoremap <buffer> <C-f> <Esc>: silent exec '.!inkscape-figures create "'.getline('.').'" "'.b:vimtex.root.'/figures/"'<CR><CR>:w<CR>
 autocmd FileType tex nnoremap <buffer> <C-f> : silent exec '!inkscape-figures edit "'.b:vimtex.root.'/figures/" > /dev/null 2>&1 &'<CR><CR>:redraw!<CR>
+" fzf-bibtex integration
+" let $FZF_BIBTEX_CACHEDIR = 'PATH-TO-CACHE-DIR'
+" let $FZF_BIBTEX_SOURCES = 'PATH-TO-BIBTEX-FILE'
+
+function! s:bibfiles()
+  let bibfiles = (
+      \ globpath('.', '*.bib', v:true, v:true) +
+      \ globpath('..', '*.bib', v:true, v:true) +
+      \ globpath('*/', '*.bib', v:true, v:true)
+      \ )
+  let bibfiles = join(bibfiles, ' ')
+  return bibfiles
+endfunction
+
+function! Bibtex_ls()
+  let source_cmd = 'bibtex-ls '.s:bibfiles()
+  return source_cmd
+endfunction
+
+function! s:bibtex_cite_mode()
+    let arg=''
+    if &filetype ==# 'tex'
+      let arg='-mode=latex'
+    endif
+    return arg
+endfunction
+
+function! s:bibtex_cite_sink(lines)
+    let r=system("bibtex-cite ". s:bibtex_cite_mode(), a:lines)
+    execute ':normal! a' . r
+endfunction
+
+function! s:bibtex_markdown_sink(lines)
+    let bibfiles=Bibtex_ls()
+    let r=system("bibtex-markdown " . s:bibfiles(), a:lines)
+    execute ':normal! a' . r
+endfunction
+
+function! s:bibtex_cite_sink_insert(lines)
+    let r=system("bibtex-cite ". s:bibtex_cite_mode(), a:lines)
+    execute ':normal! a' . r
+    call feedkeys('a', 'n')
+endfunction
+
+nnoremap <silent> <leader>c :call fzf#run({
+                        \ 'source': Bibtex_ls(),
+                        \ 'sink*': function('<sid>bibtex_cite_sink'),
+                        \ 'up': '40%',
+                        \ 'options': '--ansi --layout=reverse-list --multi --prompt "Cite> "'})<CR>
+
+nnoremap <silent> <leader>m :call fzf#run({
+                        \ 'source': Bibtex_ls(),
+                        \ 'sink*': function('<sid>bibtex_markdown_sink'),
+                        \ 'up': '40%',
+                        \ 'options': '--ansi --layout=reverse-list --multi --prompt "Markdown> "'})<CR>
+
+inoremap <silent> @@ <c-g>u<c-o>:call fzf#run({
+                        \ 'source': Bibtex_ls(),
+                        \ 'sink*': function('<sid>bibtex_cite_sink_insert'),
+                        \ 'up': '40%',
+                        \ 'options': '--ansi --layout=reverse-list --multi --prompt "Cite> "'})<CR>
+
+" bibtex-cite
+" let g:bibtexcite_bibfile = ['/home/guillermo/control-thesis/dissertation/thesis/bibliography.bib']
 " }}}
 
 " CtrlsF {{{
@@ -409,7 +504,7 @@ inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 " Vimwiki {{{
   let g:vimwiki_list = [{'path': '~/wiki/', 'syntax': 'markdown', 'ext': 'md'}]
   let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown'}
-  let g:vimwiki_global_ext = 1
+  let g:vimwiki_global_ext = 0
   let g:vimwiki_markdown_link_ext = 1
   let g:vimwiki_folding = 'expr'
 "   augroup Mkd
@@ -419,7 +514,7 @@ inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 " }}}
 
 set foldlevel=99
-autocmd VimEnter * MatchDebug
+" autocmd VimEnter * MatchDebug
 
 " After Vim-Plug
 colorscheme molokai

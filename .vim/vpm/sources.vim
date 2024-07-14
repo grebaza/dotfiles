@@ -14,7 +14,8 @@ Plug 'MarcWeber/vim-addon-commenting'
 "Plug 'vim-syntastic/syntastic'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' " snippets collection
-Plug 'majutsushi/tagbar'
+" Plug 'majutsushi/tagbar'
+Plug 'liuchengxu/vista.vim'
 Plug 'kien/ctrlp.vim'
 
 " YouCompleteMe
@@ -31,7 +32,8 @@ Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'davidhalter/jedi-vim'
 
 " XML/HTML tags navigation
-Plug 'vim-scripts/matchit.zip'
+" Plug 'vim-scripts/matchit.zip'
+Plug 'andymass/vim-matchup'
 
 " Git/mercurial/others diff icons on the side of the file lines
 Plug 'mhinz/vim-signify'
@@ -58,6 +60,7 @@ Plug 'lervag/vimtex'
 " Fzf
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'ferdinandyb/bibtexcite.vim'
 
 " Vim-autoformat
 Plug 'vim-autoformat/vim-autoformat'
