@@ -1,6 +1,7 @@
 " NERDTree
 "it will be loaded on the first invocation of NERDTreeToggle command
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'PhilRunninger/nerdtree-visual-selection'
 
 " Lazy loading (on demand)
 "Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
@@ -16,7 +17,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets' " snippets collection
 " Plug 'majutsushi/tagbar'
 Plug 'liuchengxu/vista.vim'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 " YouCompleteMe
 function! BuildYCM(info)
@@ -25,10 +26,10 @@ function! BuildYCM(info)
   " - status: 'installed', 'updated', or 'unchanged'
   " - force:  set on PlugInstall! or PlugUpdate!
   if a:info.status == 'installed' || a:info.force
-    !python3 install.py --java-completer
+    !python3 install.py --all --ninja
   endif
 endfunction
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+Plug 'Valloric/YouCompleteMe', { 'commit': 'b6e8c64', 'do': function('BuildYCM') }
 Plug 'davidhalter/jedi-vim'
 
 " XML/HTML tags navigation

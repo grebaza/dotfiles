@@ -153,3 +153,7 @@ export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 complete -C /usr/bin/terraform terraform
+
+# >>>> Vagrant command completion (start)
+. /opt/vagrant/embedded/gems/gems/vagrant-2.4.3/contrib/bash/completion.sh
+# <<<<  Vagrant command completion (end)

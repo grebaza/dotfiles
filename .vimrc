@@ -468,13 +468,13 @@ function! s:bibtex_cite_sink_insert(lines)
     call feedkeys('a', 'n')
 endfunction
 
-nnoremap <silent> <leader>c :call fzf#run({
+nnoremap <silent> <leader>cc :call fzf#run({
                         \ 'source': Bibtex_ls(),
                         \ 'sink*': function('<sid>bibtex_cite_sink'),
                         \ 'up': '40%',
                         \ 'options': '--ansi --layout=reverse-list --multi --prompt "Cite> "'})<CR>
 
-nnoremap <silent> <leader>m :call fzf#run({
+nnoremap <silent> <leader>cm :call fzf#run({
                         \ 'source': Bibtex_ls(),
                         \ 'sink*': function('<sid>bibtex_markdown_sink'),
                         \ 'up': '40%',
@@ -485,6 +485,8 @@ inoremap <silent> @@ <c-g>u<c-o>:call fzf#run({
                         \ 'sink*': function('<sid>bibtex_cite_sink_insert'),
                         \ 'up': '40%',
                         \ 'options': '--ansi --layout=reverse-list --multi --prompt "Cite> "'})<CR>
+
+nnoremap <silent> <leader>cs :let g:bibtexcite_bibfile=<SID>bibfiles() \| :BibtexciteShowcite<CR>
 
 " bibtex-cite
 " let g:bibtexcite_bibfile = ['/home/guillermo/control-thesis/dissertation/thesis/bibliography.bib']
@@ -506,12 +508,18 @@ inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
   let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown'}
   let g:vimwiki_global_ext = 0
   let g:vimwiki_markdown_link_ext = 1
-  let g:vimwiki_folding = 'expr'
+  let g:vimwiki_folding = ''
 "   augroup Mkd
 "     au BufRead,BufWinEnter,BufNewFile *.{md,mdx,mdown,mkd,mkdn,markdown,mdwn} setlocal syntax=markdown
 "     au BufRead,BufWinEnter,BufNewFile *.{md,mdx,mdown,mkd,mkdn,markdown,mdwn}.{des3,des,bf,bfa,aes,idea,cast,rc2,rc4,rc5,desx} setlocal syntax=markdown
 "   augroup END
 " }}}
+
+" Conceal text between Custom Tags
+augroup CustomMarkdownConceal
+  autocmd!
+  au FileType markdown,vimwiki syntax region customTag start=">-" end="-<" conceal cchar=•
+augroup END
 
 set foldlevel=99
 " autocmd VimEnter * MatchDebug
