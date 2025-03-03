@@ -12,7 +12,7 @@ open-wiki() {
   # if [ -n "$WAYLAND_DISPLAY" ]; then
   #   file=$(rg --files --follow | bemenu --fn 'Hack 11' -p "wiki:" -i -l 20)
   # else
-  file=$(rg --files --follow | rofi -show-icons -normal-window -dmenu -i -p "notes")
+  file=$(rg --files --follow | rofi -show-icons -window -dmenu -i -p "notes")
   # file=$(rg --files --follow | rofi -dmenu -no-custom  -i -p "wiki")
   # fi
 

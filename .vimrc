@@ -57,7 +57,7 @@ silent! set pumwidth=35
 " Presentation
 set matchtime=2
 set matchpairs+=<:>
-set scrolloff=5
+set scrolloff=2
 " set splitbelow
 set splitright
 set previewheight=20
@@ -166,18 +166,21 @@ endif
 
 " vim-airline {{{
   "extensions integration
-  let g:airline#extensions#tabline#enabled = 1 "show tabs if only one is enabled
+  "enable/disable enhanced tabline
+  let g:airline#extensions#tabline#enabled = 1
   let g:airline#extensions#tabline#fnamemod = ':t'
   let g:airline#extensions#tabline#switch_buffers_and_tabs = 1
   "enable/disable displaying buffers with a single tab
   let g:airline#extensions#tabline#show_buffers = 1
-  " let g:airline#extensions#tabline#formatter = 'unique_tail'
+  let g:airline#extensions#tabline#formatter = 'unique_tail'
   " let g:airline#extensions#tabline#show_tabs = 0
-  " let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+  "configure how numbers are displayed in tab mode
+  " let g:airline#extensions#tabline#tab_nr_type = 1
   " let g:airline#extensions#tabline#buffers_label = 'b'
   " let g:airline#extensions#tabline#tabs_label = 't'
   let g:airline#extensions#tabline#left_sep = ''
   let g:airline#extensions#tabline#left_alt_sep = ''
+
   let g:airline#extensions#bufferline#enabled = 1
   let g:airline#extensions#syntastic#enabled = 1
   let g:airline#extensions#tagbar#enabled = 1
@@ -509,6 +512,7 @@ inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
   let g:vimwiki_global_ext = 0
   let g:vimwiki_markdown_link_ext = 1
   let g:vimwiki_folding = ''
+  let g:vimwiki_key_mappings = {'table_mappings': 0, }
 "   augroup Mkd
 "     au BufRead,BufWinEnter,BufNewFile *.{md,mdx,mdown,mkd,mkdn,markdown,mdwn} setlocal syntax=markdown
 "     au BufRead,BufWinEnter,BufNewFile *.{md,mdx,mdown,mkd,mkdn,markdown,mdwn}.{des3,des,bf,bfa,aes,idea,cast,rc2,rc4,rc5,desx} setlocal syntax=markdown

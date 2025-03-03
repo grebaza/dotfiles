@@ -68,6 +68,7 @@ Plug 'vim-autoformat/vim-autoformat'
 
 Plug 'vimwiki/vimwiki'
 Plug 'dyng/ctrlsf.vim'
+Plug 'pprovost/vim-ps1'
 
 " Unmanaged plugin (manually installed and updated)
 "Plug '~/myplugin'
