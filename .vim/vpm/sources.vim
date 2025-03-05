@@ -1,74 +1,69 @@
-" NERDTree
-"it will be loaded on the first invocation of NERDTreeToggle command
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" ==============================
+" PLUGINS CONFIGURATION
+" ==============================
+
+" --- NERDTree (File Explorer) ---
+Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'PhilRunninger/nerdtree-visual-selection'
 
-" Lazy loading (on demand)
-"Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
-"autocmd! User goyo.vim echom 'Goyo is now loaded!'
+" --- Version Control ---
+Plug 'tpope/vim-fugitive'  " Git integration
+Plug 'mhinz/vim-signify'   " Git/Mercurial diff markers
 
-" Others
-Plug 'tpope/vim-fugitive'
+" --- Status Bar & UI Enhancements ---
 Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
-Plug 'MarcWeber/vim-addon-commenting'
-"Plug 'vim-scripts/vcscommand.vim'
-"Plug 'vim-syntastic/syntastic'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets' " snippets collection
-" Plug 'majutsushi/tagbar'
-Plug 'liuchengxu/vista.vim'
-Plug 'ctrlpvim/ctrlp.vim'
 
-" YouCompleteMe
+" --- Snippets ---
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets' " snippets collection
+
+" --- Autocomplete (YouCompleteMe & Python Support) ---
 function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " - name:   name of the plugin
-  " - status: 'installed', 'updated', or 'unchanged'
-  " - force:  set on PlugInstall! or PlugUpdate!
+  " info has 3 fields: name, status ('installed', 'updated', or 'unchanged'),
+  " and force (set on PlugInstall! or PlugUpdate!)
   if a:info.status == 'installed' || a:info.force
     !python3 install.py --all --ninja
   endif
 endfunction
-Plug 'Valloric/YouCompleteMe', { 'commit': 'b6e8c64', 'do': function('BuildYCM') }
-Plug 'davidhalter/jedi-vim'
+Plug 'ycm-core/YouCompleteMe', { 'commit': 'b6e8c64', 'do': function('BuildYCM') }
+Plug 'davidhalter/jedi-vim' " Python autocompletion
 
-" XML/HTML tags navigation
-" Plug 'vim-scripts/matchit.zip'
-Plug 'andymass/vim-matchup'
+" --- Syntax & Code Navigation ---
+Plug 'michaeljsmith/vim-indent-object' " Better indentation motions
+Plug 'andymass/vim-matchup' " Enhanced % navigation for matching pairs
 
-" Git/mercurial/others diff icons on the side of the file lines
-Plug 'mhinz/vim-signify'
-Plug 'zweifisch/pipe2eval'
+" --- Tag Navigation ---
+Plug 'liuchengxu/vista.vim' " Tagbar alternative with LSP support
 
-" Vim-markdown
+" --- File Search & Navigation ---
+Plug 'ctrlpvim/ctrlp.vim' " Fuzzy file search
+Plug 'junegunn/fzf' | Plug 'junegunn/fzf.vim'
+
+" --- Markdown & LaTeX Support ---
 Plug 'godlygeek/tabular'
 Plug 'preservim/vim-markdown'
+Plug 'lervag/vimtex' " LaTeX editing & compiling
+Plug 'ferdinandyb/bibtexcite.vim' " BibTeX citations
 
-" Color schemes
+" --- Color Schemes ---
 Plug 'crusoexia/vim-monokai'
-" Plug 'rakr/vim-one'
-" Plug 'ayu-theme/ayu-vim'
-Plug 'arcticicestudio/nord-vim'
+Plug 'nordtheme/vim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'tomasr/molokai'
-Plug 'antonio-hickey/citrus-mist'
+Plug 'sainnhe/sonokai'
 
-" Others
-Plug 'vim-scripts/vis'
-Plug 'roxma/vim-tmux-clipboard'
-Plug 'lervag/vimtex'
-
-" Fzf
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'ferdinandyb/bibtexcite.vim'
-
-" Vim-autoformat
+" --- Autoformatting & Commenting ---
 Plug 'vim-autoformat/vim-autoformat'
+Plug 'tpope/vim-commentary' " Easily comment/uncomment code
+" Plug 'tpope/vim-surround' " Better text object manipulation
+" Plug 'vim-scripts/vis'
 
-Plug 'vimwiki/vimwiki'
-Plug 'dyng/ctrlsf.vim'
-Plug 'pprovost/vim-ps1'
+" --- Miscellaneous ---
+Plug 'ojroques/vim-oscyank'
+Plug 'roxma/vim-tmux-clipboard' " Clipboard integration with tmux
+Plug 'vimwiki/vimwiki' " Personal wiki in Vim
+Plug 'dyng/ctrlsf.vim' " Full-text search
+Plug 'pprovost/vim-ps1' " PowerShell syntax highlighting
 
-" Unmanaged plugin (manually installed and updated)
-"Plug '~/myplugin'
+
+" --- Manually Installed Plugins (Unmanaged) ---
+" Plug '~/myplugin'
