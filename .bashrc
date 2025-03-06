@@ -132,26 +132,26 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#------------------
+# Tools
+# -----------------
+# Fzf
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # node version manager
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# powerline-shell
-function _update_ps1() {
-    PS1=$(powerline-shell $?)
-}
+# Starship (prompt)
+eval "$(starship init bash)"
 
-if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-fi
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# Sdkman
+# this must be at the end of the file for sdkman to work!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
+# Terraform
 complete -C /usr/bin/terraform terraform
 
 # >>>> Vagrant command completion (start)
