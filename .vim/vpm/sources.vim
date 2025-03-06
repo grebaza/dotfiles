@@ -24,7 +24,7 @@ function! BuildYCM(info)
     !python3 install.py --all --ninja
   endif
 endfunction
-Plug 'ycm-core/YouCompleteMe', { 'commit': 'b6e8c64', 'do': function('BuildYCM') }
+Plug 'ycm-core/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'davidhalter/jedi-vim' " Python autocompletion
 
 " --- Syntax & Code Navigation ---
@@ -46,7 +46,6 @@ Plug 'ferdinandyb/bibtexcite.vim' " BibTeX citations
 
 " --- Color Schemes ---
 Plug 'crusoexia/vim-monokai'
-Plug 'nordtheme/vim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'tomasr/molokai'
 Plug 'sainnhe/sonokai'
@@ -63,7 +62,6 @@ Plug 'roxma/vim-tmux-clipboard' " Clipboard integration with tmux
 Plug 'vimwiki/vimwiki' " Personal wiki in Vim
 Plug 'dyng/ctrlsf.vim' " Full-text search
 Plug 'pprovost/vim-ps1' " PowerShell syntax highlighting
-
 
 " --- Manually Installed Plugins (Unmanaged) ---
 " Plug '~/myplugin'
