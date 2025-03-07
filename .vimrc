@@ -218,9 +218,9 @@ let NERDTreeIgnore = ['\.pyc$', '\.pyo$', '\.swp$', '.*\.swp$', '\.swo$', '\.swn
 " -----------------------------
 " Custom Shortcuts
 " -----------------------------
-nnoremap <leader>l :bnext<CR>
-nnoremap <leader>h :bprevious<CR>
-nnoremap <leader>d :b#<bar>bd#<CR>
+nnoremap <localleader>l :bnext<CR>
+nnoremap <localleader>h :bprevious<CR>
+nnoremap <localleader>d :b#<bar>bd#<CR>
 nnoremap <leader>bl :ls<CR>
 nnoremap <C-s> :up<CR>
 
