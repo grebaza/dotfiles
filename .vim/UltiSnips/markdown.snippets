@@ -1,0 +1,16 @@
+snippet fm "Insert Markdown Frontmatter" b
+---
+title: ${1:Title}
+date: ${2:`!v strftime("%Y-%m-%d")`}
+tags: [${3:tag}]
+${4:header-includes: |
+    \usepackage{fontsetup}}
+---
+$0
+endsnippet
+
+snippet hil "Insert header includes for LaTeX" b
+header-includes: |
+    \usepackage{fontsetup}
+endsnippet
+
