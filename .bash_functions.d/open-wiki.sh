@@ -1,6 +1,6 @@
 # shellcheck disable=SC2148
 openwiki() {
-  local dir="${1:-$HOME/wiki}"  # Default to $HOME/wiki if no argument is provided
+  local dir="${1:-.}"  # Default to cwd if no argument is provided
   local WIKI_DIR="$HOME/wiki"
   local cwd_changed=false
 
