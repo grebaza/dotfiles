@@ -66,7 +66,7 @@ fi
 # ------------------
 [[ -r ~/.bash_aliases ]] && . ~/.bash_aliases
 
-for component in ~/.bash_{functions}/*; do
+for component in ~/.bash_functions.d/*; do
   [[ -f "$component" && -r "$component" ]] && . "$component"
 done 2>/dev/null
 
