@@ -1,7 +1,14 @@
-# shellcheck disable=SC2148
-share_repo(){
-  sudo chgrp -R repos "$1"
-  sudo chmod -R g+rw "$1"
-  sudo chmod g+s "$(find "$1" -type d)"
-  git init --bare --shared=all "$1"
+share_repo() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: share_repo <repository_directory>" >&2
+    return 1
+  fi
+
+  local repo_dir="$1"
+
+  sudo chgrp -R repos "$repo_dir"
+  sudo chmod -R g+rw "$repo_dir"
+  sudo find "$repo_dir" -type d -exec chmod g+s {} +
+  git init --bare --shared=all "$repo_dir"
 }
+

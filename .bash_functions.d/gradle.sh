@@ -1,35 +1,52 @@
-# Get the size of gradle caches, wrappers and daemons in human readable format
-# Depends on: du, awk
-# Use as: gradleCacheWrapperDaemonsSize
-gradleCacheWrapperDaemonsSize(){
-    DIR_TO_CHECK=("caches"  "wrapper"  "daemon")
-    for dir in ${DIR_TO_CHECK[*]}; do
-        printf "  👉 ~/.gradle/$dir: $(du -sh ~/.gradle/$dir | awk '{ print $1 }')\n"
-    done
+# Gradle cache cleanup script
+# - Displays the size of caches, wrappers, and daemons in human-readable format
+# - Deletes files not accessed in over 30 days and removes empty directories
+
+# Global variables
+GRADLE_HOME="${HOME}/.gradle"
+DIRS=(caches wrapper daemon)
+
+gradleCacheWrapperDaemonsSize() {
+  local dir size dummy
+  for dir in "${DIRS[@]}"; do
+    if [[ -d "$GRADLE_HOME/$dir" ]]; then
+      # Use built-in read to capture the size from du, avoiding awk/cut
+      read -r size dummy < <(du -sh "$GRADLE_HOME/$dir" 2>/dev/null)
+      printf "  👉 %s: %s\n" "$GRADLE_HOME/$dir" "$size"
+    else
+      printf "  👉 %s: not found\n" "$GRADLE_HOME/$dir"
+    fi
+  done
 }
 
-# Clean up the gradle caches, wrappers and daemons directory of files
-# that were accessed more than 30 days ago and remove empty directories
-# Depends on: gradleCacheWrapperDaemonsSize
-# Use as: gradleFreeUpSpace
-gradleFreeUpSpace(){
-    echo " [BEFORE Cleanup] Gradle caches size:"
-    gradleCacheWrapperDaemonsSize
-    echo "=========================================================="
-    echo " Cleaning up gradle directories ..."
-    echo " "
-    echo " Working in:"
-    DIR_TO_CHECK=("caches"  "wrapper"  "daemon")
-    for dir in ${DIR_TO_CHECK[*]}; do
-        echo " 👉 ~/.gradle/$dir"
-        # Delete all files accessed 30 days ago
-        find ~/.gradle/$dir -type f -atime +30 -delete
-        # Delete empty directories
-        find ~/.gradle/$dir -mindepth 1 -type d -empty -delete
-    done
-    echo "=========================================================="
-    echo " [AFTER Cleanup] Gradle caches size:"
-    gradleCacheWrapperDaemonsSize
-    echo "=========================================================="
-    echo " Done ✅"
+gradleFreeUpSpace() {
+  echo " [BEFORE Cleanup] Gradle caches size:"
+  gradleCacheWrapperDaemonsSize
+  cat <<'EOF'
+==========================================================
+ Cleaning up gradle directories ...
+
+ Working in:
+EOF
+
+  local dir
+  for dir in "${DIRS[@]}"; do
+    echo " 👉 $GRADLE_HOME/$dir"
+    if [[ -d "$GRADLE_HOME/$dir" ]]; then
+      # Delete files not accessed in over 30 days and remove empty directories
+      find "$GRADLE_HOME/$dir" -type f -atime +30 -delete
+      find "$GRADLE_HOME/$dir" -mindepth 1 -type d -empty -delete
+    fi
+  done
+
+  cat <<'EOF'
+==========================================================
+ [AFTER Cleanup] Gradle caches size:
+EOF
+  gradleCacheWrapperDaemonsSize
+  cat <<'EOF'
+==========================================================
+ Done ✅
+EOF
 }
+

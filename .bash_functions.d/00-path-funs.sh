@@ -1,41 +1,54 @@
-# from: https://stackoverflow.com/questions/24515385/is-there-a-general-way-to-add-prepend-remove-paths-from-general-environment-vari
-# SYNOPSIS: path_prepend varName path
-# Note: Forces path into the first position, if already present.
-#       Duplicates are removed too, unless they're directly adjacent.
-# EXAMPLE: path_prepend PATH /usr/local/bin
+# Optimized path manipulation functions
+# Reference: https://stackoverflow.com/questions/24515385/
+
+# _path_clean: Removes duplicate occurrences of a given path segment
+# Arguments:
+#   $1 - Name of the variable (a colon-separated string) to clean
+#   $2 - The path segment to remove duplicates of
+# Returns:
+#   The cleaned string via stdout
+_path_clean() {
+  local varname="$1" newpath="$2"
+  local aux=":${!varname}:"
+  aux="${aux//:${newpath}:/:}" # Remove all duplicate occurrences
+  aux="${aux#:}"               # Strip leading colon
+  aux="${aux%:}"               # Strip trailing colon
+  printf '%s' "$aux"
+}
+
+# _path_prepend: Forces newpath to the beginning of the colon-separated variable
 _path_prepend() {
-  local aux=":${!1}:"
-  aux=${aux//:$2:/:}; aux=${aux#:}; aux=${aux%:}
-  printf -v "$1" '%s' "${2}${aux:+:}${aux}"
+  local varname="$1" newpath="$2"
+  local aux
+  aux="$(_path_clean "$varname" "$newpath")"
+  printf -v "$varname" '%s' "${newpath}${aux:+:}${aux}"
 }
 
-# SYNOPSIS: path_append varName path
-# Note: Forces path into the last position, if already present.
-#       Duplicates are removed too, unless they're directly adjacent.
-# EXAMPLE: path_append PATH /usr/local/bin
+# _path_append: Forces newpath to the end of the colon-separated variable
 _path_append() {
-  local aux=":${!1}:"
-  aux=${aux//:$2:/:}; aux=${aux#:}; aux=${aux%:}
-  printf -v "$1" '%s' "${aux}${aux:+:}${2}"
+  local varname="$1" newpath="$2"
+  local aux
+  aux="$(_path_clean "$varname" "$newpath")"
+  printf -v "$varname" '%s' "${aux}${aux:+:}${newpath}"
 }
 
-# SYNOPSIS: path_remove varName path
-# Note: Duplicates are removed too, unless they're directly adjacent.
-# EXAMPLE: path_remove PATH /usr/local/bin
+# _path_remove: Removes all occurrences of newpath from the colon-separated variable
 _path_remove() {
-  local aux=":${!1}:"
-  aux=${aux//:$2:/:}; aux=${aux#:}; aux=${aux%:}
-  printf -v "$1" '%s' "$aux"
+  local varname="$1" newpath="$2"
+  local aux
+  aux="$(_path_clean "$varname" "$newpath")"
+  printf -v "$varname" '%s' "$aux"
 }
 
+# Public functions for modifying the PATH variable
 path_prepend() {
-  _path_prepend PATH $1
+  _path_prepend PATH "$1"
 }
 
 path_append() {
-  _path_append PATH $1
+  _path_append PATH "$1"
 }
 
 path_remove() {
-  _path_remove PATH $1
+  _path_remove PATH "$1"
 }
