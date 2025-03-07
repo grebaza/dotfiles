@@ -1,24 +1,28 @@
 # shellcheck disable=SC2148
 openwiki() {
-  local dir="$1"
-  local new_cwd
-  local cwd_changed
+  local dir="${1:-$HOME/wiki}"  # Default to $HOME/wiki if no argument is provided
+  local WIKI_DIR="$HOME/wiki"
+  local cwd_changed=false
 
-  if [[ -z "$dir" || -z "$(find "$dir" -maxdepth 1 -type f -regex '.*\.\(md\|txt\)' -print -quit)" ]]; then
-    new_cwd="$HOME/wiki"
-    mkdir -p "$new_cwd" && pushd "$HOME/wiki" > /dev/null || return && cwd_changed=true
+  # If directory is empty or has no .md/.txt files, switch to WIKI_DIR
+  if ! find "$dir" -maxdepth 1 -type f \( -name "*.md" -o -name "*.txt" \) | grep -q .; then
+    dir="$WIKI_DIR"
+    mkdir -p "$dir" && pushd "$dir" > /dev/null && cwd_changed=true
   fi
 
-  # if [ -n "$WAYLAND_DISPLAY" ]; then
-  #   file=$(rg --files --follow | bemenu --fn 'Hack 11' -p "wiki:" -i -l 20)
-  # else
-  file=$(rg --files --follow | rofi -show-icons -window -dmenu -i -p "notes")
-  # file=$(rg --files --follow | rofi -dmenu -no-custom  -i -p "wiki")
-  # fi
+  # Set picker arguments for rofi
+  local picker_args=(-show-icons -dmenu -i -p "notes")
+  [[ -n $WAYLAND_DISPLAY ]] && picker_args+=("-normal-window")
 
-  if [[ -n "$file" ]]; then
-    vim "$file"
-  fi
-  [[ -n $cwd_changed ]] && popd > /dev/null || return
+  # Select file using ripgrep and rofi
+  local file
+  file=$(rg --files --follow | rofi "${picker_args[@]}")
+
+  # Open selected file in Vim
+  [[ -n $file ]] && vim "$file"
+
+  # Return to the previous directory only if we changed it
+  $cwd_changed && popd > /dev/null
 }
 alias ow=openwiki
+command -v srn-review &>/dev/null && alias srw='srn-review ~/wiki'
