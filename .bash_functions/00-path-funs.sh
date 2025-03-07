@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 # from: https://stackoverflow.com/questions/24515385/is-there-a-general-way-to-add-prepend-remove-paths-from-general-environment-vari
 # SYNOPSIS: path_prepend varName path
 # Note: Forces path into the first position, if already present.

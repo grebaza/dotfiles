@@ -1,18 +1,18 @@
 # Get the size of gradle caches, wrappers and daemons in human readable format
 # Depends on: du, awk
 # Use as: gradleCacheWrapperDaemonsSize
-function gradleCacheWrapperDaemonsSize(){
+gradleCacheWrapperDaemonsSize(){
     DIR_TO_CHECK=("caches"  "wrapper"  "daemon")
     for dir in ${DIR_TO_CHECK[*]}; do
-        printf "  👉 ~/.gradle/$dir: $(du -sh ~/.gradle/$dir | awk '{ print $1 }')\n"        
+        printf "  👉 ~/.gradle/$dir: $(du -sh ~/.gradle/$dir | awk '{ print $1 }')\n"
     done
 }
 
-# Clean up the gradle caches, wrappers and daemons directory of files 
+# Clean up the gradle caches, wrappers and daemons directory of files
 # that were accessed more than 30 days ago and remove empty directories
 # Depends on: gradleCacheWrapperDaemonsSize
 # Use as: gradleFreeUpSpace
-function gradleFreeUpSpace(){
+gradleFreeUpSpace(){
     echo " [BEFORE Cleanup] Gradle caches size:"
     gradleCacheWrapperDaemonsSize
     echo "=========================================================="

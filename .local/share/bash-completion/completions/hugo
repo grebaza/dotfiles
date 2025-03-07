@@ -1,0 +1,7 @@
+_hugo_lazy_completion() {
+    command -v hugo &>/dev/null || return
+    eval "$(hugo completion bash)"
+}
+
+# Lazy-load Hugo completion
+complete -F _hugo_lazy_completion hugo

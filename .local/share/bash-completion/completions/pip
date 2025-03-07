@@ -1,0 +1,7 @@
+_pip_lazy_completion() {
+    command -v pip &>/dev/null || return
+    eval "$(pip completion --bash)"
+}
+
+# Lazy-load Pip completion
+complete -F _pip_lazy_completion pip

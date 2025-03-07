@@ -1,0 +1,7 @@
+_pyenv_lazy_completion() {
+    command -v pyenv &>/dev/null || return
+    eval "$(pyenv init -)"
+}
+
+# Lazy-load Hugo completion
+complete -F _pyenv_lazy_completion pyenv

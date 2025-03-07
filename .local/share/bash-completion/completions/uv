@@ -1,0 +1,8 @@
+_uv_bash_completion() {
+    command -v uv &>/dev/null || return
+    eval "$(uv generate-shell-completion bash)"
+    complete -F _uv uv
+}
+
+# Lazy-load on first use
+complete -F _uv_bash_completion uv

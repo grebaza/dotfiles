@@ -1,5 +1,5 @@
-#!/bin/bash
-open-wiki() {
+# shellcheck disable=SC2148
+openwiki() {
   local dir="$1"
   local new_cwd
   local cwd_changed
@@ -21,4 +21,4 @@ open-wiki() {
   fi
   [[ -n $cwd_changed ]] && popd > /dev/null || return
 }
-alias ow=open-wiki
+alias ow=openwiki
