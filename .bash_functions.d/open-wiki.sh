@@ -25,4 +25,3 @@ openwiki() {
   $cwd_changed && popd > /dev/null
 }
 alias ow=openwiki
-command -v srn-review &>/dev/null && alias srw='srn-review ~/wiki'
