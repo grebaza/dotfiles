@@ -5,7 +5,7 @@ openwiki() {
   local cwd_changed=false
 
   # If directory is empty or has no .md/.txt files, switch to WIKI_DIR
-  if ! find "$dir" -maxdepth 1 -type f \( -name "*.md" -o -name "*.txt" \) | grep -q .; then
+  if ! find "$dir" -maxdepth 1 -type f \( -name "*.md" -o -name "*.txt" \) | grep -q '.'; then
     dir="$WIKI_DIR"
     mkdir -p "$dir" && pushd "$dir" > /dev/null && cwd_changed=true
   fi
