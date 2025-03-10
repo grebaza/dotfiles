@@ -1,18 +1,17 @@
 openwiki() {
-  local dir="${1:-.}"  # Default to cwd if no argument is provided
-  local cwd_changed=false
+  local dir="${1:-$PWD}"  # Default to current directory
   local WIKI_DIR="$HOME/wiki"
 
-  if ! find "$dir" -maxdepth 1 -type f \( -name "*.md" -o -name "*.txt" \) | grep -q '.'; then
-    dir="$WIKI_DIR"
-    pushd "$dir" &>/dev/null && cwd_changed=true
-  fi
+  # Choose first directory containing markdown/text files
+  local target_dir=""
+  for d in "$dir" "$WIKI_DIR"; do
+    test -n "$(find "$d" -maxdepth 1 -type f \( -name "*.md" -o -name "*.txt" \) -print -quit)" && target_dir="$d" && break
+  done
+
+  [[ -z "$target_dir" ]] && echo "No .md or .txt files found!" && return 1 # Exit if no files found
 
   # Select file using ripgrep and rofi
-  local file=$(rg --files --follow | rofi show-icons -dmenu -i -p "notes")
-  [[ -n "$file" ]] && $EDITOR "$file"
-
-  # Return to the previous directory only if we changed it
-  $cwd_changed && popd &>/dev/null
+  local file=$(cd "$target_dir" && rg --files --follow --hidden --glob '!.*' --sort path | rofi -show-icons -dmenu -i -p "notes")
+  [[ -n "$file" ]] && $EDITOR "$target_dir/$file"
 }
 alias ow=openwiki
