@@ -62,6 +62,7 @@ Plug 'roxma/vim-tmux-clipboard' " Clipboard integration with tmux
 Plug 'vimwiki/vimwiki' " Personal wiki in Vim
 Plug 'dyng/ctrlsf.vim' " Full-text search
 Plug 'pprovost/vim-ps1' " PowerShell syntax highlighting
+" Plug 'edkolev/tmuxline.vim' " Tmux statusline generator
 
 " --- Manually Installed Plugins (Unmanaged) ---
 " Plug '~/myplugin'
