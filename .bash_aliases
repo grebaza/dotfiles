@@ -5,7 +5,6 @@ alias bat='batcat'
 #--------
 # Git
 #--------
-
 alias gs='git status'
 alias gss='git status -s'
 alias ga='git add'

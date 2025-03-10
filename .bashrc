@@ -53,6 +53,9 @@ if command -v notify-send >/dev/null 2>&1; then
   alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history 1 | sed -e '\''s/^ *[0-9]\{1,\} *//;s/[;&|] *alert$//'\'')"'
 fi
 
+[[ -n $WAYLAND_DISPLAY ]] && rofi_args='-normal-window'
+alias rofi='rofi "$rofi_args"'
+
 # ------------------
 # Bash Completion (if available)
 # ------------------
@@ -111,7 +114,7 @@ _sdk_init() {
 complete -F _sdk_init sdk
 
 # Cleanup and metrics
-unset color_prompt component lazy_load
+unset color_prompt component lazy_load rofi_args
 
 
 # End timer and display load time (only for interactive shells)
