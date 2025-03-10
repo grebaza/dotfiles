@@ -34,6 +34,7 @@ else
   PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 [[ "$TERM" =~ xterm.*|rxvt.* ]] && PS1="\[\e]0;\u@\h: \w\a\]$PS1"
+[[ -z "${COLORTERM}" ]] && COLORTERM=truecolor
 
 # ------------------
 # Aliases & Color Support

@@ -233,8 +233,8 @@ let g:ycm_auto_trigger = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_key_invoke_completion = ycm_trigger_key
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
 let g:ycm_echo_current_diagnostic = 'virtual-text'
 " Direct command mappings (non-recursive)
 nnoremap <leader>yd :YcmCompleter GoToDefinition<CR>
@@ -463,7 +463,6 @@ vmap <C-F>S <Plug>CtrlSFVwordExec      " Search on selection (capital "S" for ex
 " Insert Mode:
 inoremap <C-F>t <Esc>:CtrlSFToggle<CR> " Toggle CtrlSF interface in insert mode
 
-
 " -----------------------------
 " Vimwiki Settings
 " -----------------------------
@@ -473,7 +472,6 @@ let g:vimwiki_global_ext = 0
 let g:vimwiki_markdown_link_ext = 1
 let g:vimwiki_folding = ''
 let g:vimwiki_key_mappings = {'table_mappings': 0}
-
 
 " ------------------------------------
 " Custom Markdown Conceal (GRE Prep)
@@ -523,6 +521,7 @@ augroup END
 " =============================================================================
 " Final Appearance
 " =============================================================================
+if has('termguicolors') | set termguicolors | endif
 colorscheme sonokai
 highlight clear Conceal
 
