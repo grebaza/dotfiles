@@ -1,0 +1,21 @@
+_dfl_completion() {
+    declare -F _fzf_path_completion >/dev/null || return
+
+    # Save the original values
+    local orig_word0="${COMP_WORDS[0]}"
+    local orig_line="$COMP_LINE"
+
+    # Replace the command name in both COMP_WORDS and COMP_LINE with "git"
+    COMP_WORDS[0]="git"
+    COMP_LINE="git${COMP_LINE#dfl}"
+
+    # Invoke fzf's path completion (which, for git, uses _fzf_path_completion)
+    _fzf_path_completion git
+
+    # Restore the original values
+    COMP_WORDS[0]="$orig_word0"
+    COMP_LINE="$orig_line"
+}
+
+complete -o default -F _dfl_completion dfl
+
