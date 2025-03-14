@@ -17,5 +17,4 @@ _dfl_completion() {
     COMP_LINE="$orig_line"
 }
 
-complete -o default -F _dfl_completion dfl
-
+complete -o bashdefault -o default -F _dfl_completion dfl
