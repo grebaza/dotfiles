@@ -43,6 +43,16 @@ Plug 'godlygeek/tabular'
 Plug 'preservim/vim-markdown'
 Plug 'lervag/vimtex' " LaTeX editing & compiling
 Plug 'ferdinandyb/bibtexcite.vim' " BibTeX citations
+function! BuildComposer(info)
+  if a:info.status != 'unchanged' || a:info.force
+    if has('nvim')
+      !cargo build --release --locked
+    else
+      !cargo build --release --locked --no-default-features --features json-rpc
+    endif
+  endif
+endfunction
+Plug 'euclio/vim-markdown-composer', { 'do': function('BuildComposer') }
 
 " --- Color Schemes ---
 Plug 'crusoexia/vim-monokai'
@@ -53,7 +63,7 @@ Plug 'sainnhe/sonokai'
 " --- Autoformatting & Commenting ---
 Plug 'vim-autoformat/vim-autoformat'
 Plug 'tpope/vim-commentary' " Easily comment/uncomment code
-" Plug 'tpope/vim-surround' " Better text object manipulation
+Plug 'tpope/vim-surround' " Better text object manipulation
 " Plug 'vim-scripts/vis'
 
 " --- Miscellaneous ---
